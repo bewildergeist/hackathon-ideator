@@ -42,9 +42,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <main className="py-16 px-4 max-w-xl mx-auto">
-    <Outlet />
-  </main>
+  return (
+    <main className="py-16 px-4 max-w-xl mx-auto">
+      <Outlet />
+    </main>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

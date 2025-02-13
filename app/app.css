@@ -1,16 +1,57 @@
 @import "tailwindcss";
 
+/* Fonts ---------------------------------------------------------- */
 @theme {
   --font-monospace:
     "Handjet", ui-monospace, monospace, "Segoe UI Emoji", "Segoe UI Symbol",
     "Noto Color Emoji";
 }
 
+/* Default element styling ---------------------------------------- */
 html,
 body {
-  @apply bg-cyan-950 text-cyan-200 text-lg font-monospace;
+  @apply bg-cyan-950 text-cyan-200 font-light text-lg tracking-wide font-monospace;
 }
 
+input {
+  @apply border border-current p-1;
+}
+
+button {
+  @apply border-current border py-1 px-2 bg-cyan-900 cursor-pointer;
+}
+
+button:hover {
+  @apply bg-cyan-800;
+}
+
+button:active {
+  @apply bg-cyan-950;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply text-cyan-50;
+}
+
+li {
+  @apply list-inside;
+  list-style-type: "- ";
+}
+
+summary {
+  list-style-type: "▹ ";
+}
+
+details[open] > summary {
+  list-style-type: "▿ ";
+}
+
+/* Animation ------------------------------------------------------ */
 @keyframes typing {
   from {
     width: 0;
