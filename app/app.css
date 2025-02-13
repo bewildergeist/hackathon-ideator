@@ -18,7 +18,7 @@ input {
 }
 
 button {
-  @apply border-current border py-1 px-2 bg-cyan-900 cursor-pointer;
+  @apply transition-colors border-current border px-2 bg-cyan-900 cursor-pointer;
 }
 
 button:hover {

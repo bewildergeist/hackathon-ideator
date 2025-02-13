@@ -1,6 +1,8 @@
+import { useFetcher } from "react-router";
 import type { ProjectIdeaZodType } from "~/services/generateProjectIdea";
 
 export default function ProjectIdeaCard({
+  id,
   projectName,
   description,
   targetAudience,
@@ -9,9 +11,18 @@ export default function ProjectIdeaCard({
   uiComponentsUsed = [],
   timeline = [],
 }: ProjectIdeaZodType) {
+  const deleteFetcher = useFetcher();
   return (
     <div className="border border-cyan-200 p-4 my-3">
-      <h2 className="text-xl mb-2">{projectName}</h2>
+      <div className="flex justify-between items-start">
+        <h2 className="text-xl mb-2">{projectName}</h2>
+        <deleteFetcher.Form method="post">
+          <input type="hidden" name="id" value={id} />
+          <button type="submit" name="intent" value="delete" title="Delete project idea" className="hover:text-yellow-600">
+            {deleteFetcher.state !== "idle" ? "..." : "×"}
+          </button>
+        </deleteFetcher.Form>
+      </div>
 
       <div className="mb-4">
         <p>{description}</p>

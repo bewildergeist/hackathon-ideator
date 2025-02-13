@@ -1,4 +1,4 @@
-import { Form, useFetcher } from "react-router";
+import { data, Form, useFetcher } from "react-router";
 import type { Route } from "./+types/home";
 import ProjectIdeaCard from "~/components/ProjectIdeaCard";
 import ProjectIdea from "~/models/ProjectIdea";
@@ -31,7 +31,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           placeholder="Optional idea or prompt"
           className="flex-grow"
         />
-        <button type="submit">
+        <button name="intent" value="generate" type="submit">
           {fetcher.state === "idle" ? (
             "Generate idea"
           ) : (
@@ -48,8 +48,21 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
-  const message = formData.get("message") as string;
-  const projectIdea = await generateProjectIdea({ message });
-  await ProjectIdea.create(projectIdea);
-  return { ok: true };
+  const intent = formData.get("intent");
+  switch (intent) {
+    case "generate": {
+      const message = formData.get("message") as string;
+      const projectIdea = await generateProjectIdea({ message });
+      await ProjectIdea.create(projectIdea);
+      return data({ ok: true }, { status: 201 });
+    }
+    case "delete": {
+      const id = formData.get("id");
+      await ProjectIdea.findByIdAndDelete(id);
+      return data({ ok: true }, { status: 204 });
+    }
+    default: {
+      throw new Error("Unexpected action");
+    }
+  }
 }
