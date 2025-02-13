@@ -16,6 +16,8 @@ const projectIdeaSchema = z.object({
   mainChallenge: z.string(),
 });
 
+export type ProjectIdeaZodType = z.infer<typeof projectIdeaSchema>;
+
 export async function generateProjectIdea({ message }: { message?: string }) {
   const response = await mistral.chat.parse({
     model: "mistral-small-latest",

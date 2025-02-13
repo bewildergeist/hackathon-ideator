@@ -1,29 +1,33 @@
-import { type ProjectIdeaType } from "../models/ProjectIdea";
+import type { ProjectIdeaZodType } from "~/services/generateProjectIdea";
 
-interface ProjectIdeaProps {
-  projectIdea: ProjectIdeaType;
-}
-
-export default function ProjectIdeaCard({ projectIdea }: ProjectIdeaProps) {
+export default function ProjectIdeaCard({
+  projectName,
+  description,
+  targetAudience,
+  mainChallenge,
+  keyFeatures = [],
+  uiComponentsUsed = [],
+  timeline = [],
+}: ProjectIdeaZodType) {
   return (
     <div className="border border-cyan-200 p-4 my-3">
-      <h2 className="text-xl mb-2">{projectIdea.projectName}</h2>
+      <h2 className="text-xl mb-2">{projectName}</h2>
 
       <div className="mb-4">
-        <p>{projectIdea.description}</p>
+        <p>{description}</p>
       </div>
 
       <Collapsible title="Target Audience">
-        <p>{projectIdea.targetAudience}</p>
+        <p>{targetAudience}</p>
       </Collapsible>
 
       <Collapsible title="Main Challenge">
-        <p>{projectIdea.mainChallenge}</p>
+        <p>{mainChallenge}</p>
       </Collapsible>
 
       <Collapsible title="Key Features">
         <ul className="mt-2">
-          {projectIdea.keyFeatures.map((feature, index) => (
+          {keyFeatures.map((feature, index) => (
             <li key={index}>{feature}</li>
           ))}
         </ul>
@@ -31,7 +35,7 @@ export default function ProjectIdeaCard({ projectIdea }: ProjectIdeaProps) {
 
       <Collapsible title="UI Components">
         <ul className="mt-2">
-          {projectIdea.uiComponentsUsed.map((component, index) => (
+          {uiComponentsUsed.map((component, index) => (
             <li key={index}>{component}</li>
           ))}
         </ul>
@@ -39,7 +43,7 @@ export default function ProjectIdeaCard({ projectIdea }: ProjectIdeaProps) {
 
       <Collapsible title="Timeline">
         <div className="mt-2">
-          {projectIdea.timeline.map((day, index) => (
+          {timeline.map((day, index) => (
             <div key={index} className="ml-4">
               <p>Day {day.day}:</p>
               <ul>
