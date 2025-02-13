@@ -1,3 +1,4 @@
+import ProjectIdea from "~/models/ProjectIdea";
 import mistral from "../config/mistral.server";
 import { z } from "zod";
 
@@ -19,6 +20,13 @@ const projectIdeaSchema = z.object({
 export type ProjectIdeaZodType = z.infer<typeof projectIdeaSchema>;
 
 export async function generateProjectIdea({ message }: { message?: string }) {
+  const existingProjectIdeas = await ProjectIdea.find(
+    {},
+    { projectName: 1, _id: 0 },
+  );
+  const existingProjectIdeaNames = existingProjectIdeas.map(
+    (idea) => idea.projectName,
+  );
   const response = await mistral.chat.parse({
     model: "mistral-small-latest",
     messages: [
@@ -41,10 +49,7 @@ export async function generateProjectIdea({ message }: { message?: string }) {
           "While these components are from a recipe app design, your suggestion should creatively adapt them to another domain. Focus on a feasible, engaging project that showcases the integration of AI with web technologies. Aim for a limited scope that only uses a subset of the UI Components, so there is time to polish the UI and UX.\n\n" +
           "Always reply with a single, concise project idea.\n\n" +
           "These ideas have already been generated, so do not suggest them:\n" +
-          "- Travel planner\n" +
-          "- Event planner\n" +
-          "- Study Buddy\n" +
-          "- Fitness tracker\n",
+          existingProjectIdeaNames.map((name) => `- ${name}`).join("\n"),
       },
       // If the user has already provided a message, include it in the message thread
       ...(message
