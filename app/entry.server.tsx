@@ -6,8 +6,11 @@ import { ServerRouter } from "react-router";
 import { isbot } from "isbot";
 import type { RenderToPipeableStreamOptions } from "react-dom/server";
 import { renderToPipeableStream } from "react-dom/server";
+import connectDb from "./config/database.server";
 
 export const streamTimeout = 5_000;
+
+connectDb();
 
 export default function handleRequest(
   request: Request,
