@@ -4,7 +4,7 @@ import ProjectIdeaCard from "~/components/ProjectIdeaCard";
 import ProjectIdea from "~/models/ProjectIdea";
 import { generateProjectIdea } from "~/services/generateProjectIdea";
 
-export function meta({ }: Route.MetaArgs) {
+export function meta({}: Route.MetaArgs) {
   return [{ title: "Hackathon Ideator" }];
 }
 

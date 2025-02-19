@@ -18,7 +18,13 @@ export default function ProjectIdeaCard({
         <h2 className="text-xl mb-2">{projectName}</h2>
         <deleteFetcher.Form method="post">
           <input type="hidden" name="id" value={id} />
-          <button type="submit" name="intent" value="delete" title="Delete project idea" className="hover:text-yellow-600">
+          <button
+            type="submit"
+            name="intent"
+            value="delete"
+            title="Delete project idea"
+            className="hover:text-yellow-600"
+          >
             {deleteFetcher.state !== "idle" ? "..." : "×"}
           </button>
         </deleteFetcher.Form>
