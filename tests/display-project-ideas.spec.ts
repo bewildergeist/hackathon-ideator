@@ -30,3 +30,59 @@ test("shows all project ideas from the database", async ({ page }) => {
   await expect(projectIdeaHeadings).toHaveCount(projectIdeaCount);
   await expect(projectIdeaHeadings).toHaveText(projectIdeaTitles);
 });
+
+test("correctly shows collapsible content", async ({ page }) => {
+  // Find the most recent project idea in the database
+  const projectIdea = await ProjectIdea.findOne().sort({ createdAt: -1 });
+  if (!projectIdea) {
+    throw new Error("No project ideas found in the database");
+  }
+
+  await page.goto("/");
+
+  // Find the first project idea card
+  const firstProjectIdeaCard = page
+    .getByRole("article")
+    .filter({ hasText: projectIdea.projectName });
+
+  // Description should be visible by default.
+  await expect(
+    firstProjectIdeaCard.getByText(projectIdea.description),
+  ).toBeVisible();
+
+  const collapsibleSections = [
+    {
+      title: "Target Audience",
+      content: projectIdea.targetAudience,
+    },
+    {
+      title: "Main Challenge",
+      content: projectIdea.mainChallenge,
+    },
+    {
+      title: "Key Features",
+      content: projectIdea.keyFeatures.join(""),
+    },
+    {
+      title: "UI Components",
+      content: projectIdea.uiComponentsUsed.join(""),
+    },
+    {
+      title: "Timeline",
+      content: projectIdea.timeline
+        .map((day) => `Day ${day.day}:${day.tasks.join("")}`)
+        .join(""),
+    },
+  ];
+
+  for (const { title, content } of collapsibleSections) {
+    const collapsibleTitle = firstProjectIdeaCard.getByRole("heading", {
+      name: title,
+    });
+    const collapsibleContent = firstProjectIdeaCard.getByText(content);
+
+    await expect(collapsibleContent).not.toBeVisible();
+    await collapsibleTitle.click();
+    await expect(collapsibleContent).toBeVisible();
+  }
+});
