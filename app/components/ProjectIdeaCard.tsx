@@ -13,12 +13,18 @@ export default function ProjectIdeaCard({
 }: ProjectIdeaZodType) {
   const deleteFetcher = useFetcher();
   return (
-    <div className="border border-cyan-200 p-4 my-3">
+    <article className="border border-cyan-200 p-4 my-3">
       <div className="flex justify-between items-start">
         <h2 className="text-xl mb-2">{projectName}</h2>
         <deleteFetcher.Form method="post">
           <input type="hidden" name="id" value={id} />
-          <button type="submit" name="intent" value="delete" title="Delete project idea" className="hover:text-yellow-600">
+          <button
+            type="submit"
+            name="intent"
+            value="delete"
+            title="Delete project idea"
+            className="hover:text-yellow-600"
+          >
             {deleteFetcher.state !== "idle" ? "..." : "×"}
           </button>
         </deleteFetcher.Form>
@@ -66,7 +72,7 @@ export default function ProjectIdeaCard({
           ))}
         </div>
       </Collapsible>
-    </div>
+    </article>
   );
 }
 
